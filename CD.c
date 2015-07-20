@@ -15,9 +15,83 @@
 /*
    Function prototypes
 */
-/*output(char [], char [], unsigned short, int, float);*/
+void	output(char [], char [], unsigned short, int, float);
+void	enter(char []);
+int	yesno(char []);
+int 	read_int();
+float	read_float();
+void	read_string(char [], char [], int);
+void	trim_string(char []);
+
+
 void output(char tit[TITLE_LENGTH], char art[TITLE_LENGTH], unsigned short no_tracks, int alb, float prce){
 	printf("%-20s %-15s %-10hu %-5d %-6.2f\n", tit, art, no_tracks, alb, prce);
+}
+
+void enter(char prompt[]){
+	printf("%s\n", prompt);
+	printf("Press ENTER to exit program");
+	getchar();
+}
+
+int yesno(char string[]){
+	char	yn;
+	printf("%s\n", string);
+	yn = toupper(yn);
+	do{
+		printf("Please enter 'Y' or 'N': ");
+		scanf("%s", &yn);
+	}while(yn != 'Y' && yn != 'N');
+	switch(yn){
+		case 'y':
+		case 'Y':
+			return 1;
+			break;
+
+		case 'n':
+		case 'N':
+			return 0;
+			break;
+	}
+	return 0;
+}
+
+int read_int(char prompt[]){
+	int	i;
+
+	printf("%s\n", prompt);
+	scanf("%d", &i);
+
+	return i;
+}
+
+float read_float(char prompt[]){
+	float	f;
+
+	printf("%s", prompt);
+	scanf("%f", &f);
+
+	return f;
+}
+
+/*
+   read_string()
+
+   Ask the user a question and prompt for a string answer.
+   max = size of "answer" including the null terminating character.
+   Note: the answer parameter is MODIFIED by the function
+*/
+void read_string(char prompt[], char answer[], int max){
+	fputs(prompt, stdout);
+	fflush(stdin);
+	fgets(answer, max, stdin);
+
+	trim_string(answer);
+}
+
+void trim_string(char string[]){
+	if(string[strlen(string) - 1] == '\n')
+		string[strlen(string) - 1] = '\0';
 }
 
 
@@ -39,10 +113,12 @@ int main()
 		*/
 		fputs("Please enter the CD's title: ", stdout);
 		scanf("%[^\n]%*c", title[ent_num]);									/*%*c consumes the \n character at the end of the input and allows the next input to work correctly.*/
+		trim_string(title[ent_num]);
 
 #ifndef NOARTIST		
 		fputs("Please enter the artist: ", stdout);
 		scanf("%[^\n]%*c", artist[ent_num]);
+		trim_string(title[ent_num]);
 #endif
 
 		fputs("Please enter the number of tracks on the CD: ", stdout);
@@ -66,6 +142,7 @@ int main()
 
 		fputs("Enter Y if there are more CD's: ", stdout);
 		scanf(" %c%*c", &cont);
+		/*if(!yesno("Enter Y if there are more CD's: ") break;*/
 	}
 
 		/*
