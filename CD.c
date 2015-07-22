@@ -17,7 +17,7 @@
 */
 void	output(char [], char [], unsigned short, int, float);
 void	enter(char []);
-int	yesno(char []);
+int		yesno(char []);
 int 	read_int();
 float	read_float();
 void	read_string(char [], char [], int);
@@ -35,25 +35,14 @@ void enter(char prompt[]){
 }
 
 int yesno(char string[]){
-	char	yn;
-	printf("%s\n", string);
-	yn = toupper(yn);
-	do{
-		printf("Please enter 'Y' or 'N': ");
-		scanf("%s", &yn);
-	}while(yn != 'Y' && yn != 'N');
-	switch(yn){
-		case 'y':
-		case 'Y':
-			return 1;
-			break;
-
-		case 'n':
-		case 'N':
-			return 0;
-			break;
+	char	yn;	
+	for(;;){
+		printf("%s", string);
+		scanf(" %c", &yn);
+		yn = toupper(yn);
+		if(yn == 'Y')	return 1;
+		if(yn == 'N') return 0;
 	}
-	return 0;
 }
 
 int read_int(char prompt[]){
@@ -98,27 +87,26 @@ void trim_string(char string[]){
 
 int main()
 {
-	char 	title[CD_AMOUNT][TITLE_LENGTH + 1];
-	char 	artist[CD_AMOUNT][TITLE_LENGTH + 1];
+	char 		title[CD_AMOUNT][TITLE_LENGTH + 1];
+	char 		artist[CD_AMOUNT][TITLE_LENGTH + 1];
 	unsigned short 	num_tracks[CD_AMOUNT];
-	int 	album[CD_AMOUNT];		/*non-zero number is album, 0 is single*/
-	int 	ent_num, loop_num;
+	int 		album[CD_AMOUNT];		/*non-zero number is album, 0 is single*/
+	int 		ent_num, loop_num;
 	float 	price[CD_AMOUNT];
-	char	cont = 'Y';
 
 	
-	for(ent_num = 0; toupper(cont) == 'Y' && ent_num < CD_AMOUNT; ent_num++){
+	for(ent_num = 0; ent_num < CD_AMOUNT; ent_num++){
 		/*
    		  Inputting data into title, artist, num_tracks, album and price variables.
 		*/
 		fputs("Please enter the CD's title: ", stdout);
-		scanf("%[^\n]%*c", title[ent_num]);									/*%*c consumes the \n character at the end of the input and allows the next input to work correctly.*/
-		trim_string(title[ent_num]);
+		scanf(" %[^\n]%*c", title[ent_num]);									/*%*c consumes the \n character at the end of the input and allows the next input to work correctly.*/
+		/*trim_string(title[ent_num]);*/
 
 #ifndef NOARTIST		
 		fputs("Please enter the artist: ", stdout);
 		scanf("%[^\n]%*c", artist[ent_num]);
-		trim_string(title[ent_num]);
+		/*trim_string(title[ent_num]);*/
 #endif
 
 		fputs("Please enter the number of tracks on the CD: ", stdout);
@@ -140,9 +128,9 @@ int main()
 		fputs("Please enter the price (in Rands): ", stdout);
 		scanf("%f", &price[ent_num]);
 
-		fputs("Enter Y if there are more CD's: ", stdout);
-		scanf(" %c%*c", &cont);
-		/*if(!yesno("Enter Y if there are more CD's: ") break;*/
+		/*fputs("Enter Y if there are more CD's: ", stdout);
+		scanf(" %c%*c", &cont);*/
+		if(!yesno("Enter Y if there are more CD's: ")) break;
 	}
 
 		/*
@@ -152,7 +140,7 @@ int main()
 		/*
 		   Making a heading for the variable so later I can print out a whole list of these variables when there is more than one CD.
 		*/
-		for(loop_num = 0; loop_num < ent_num ; loop_num++){
+		for(loop_num = 0; loop_num <= ent_num ; loop_num++){
 			output(title[loop_num], artist[loop_num], num_tracks[loop_num], album[loop_num], price[loop_num]);
 		}
 
