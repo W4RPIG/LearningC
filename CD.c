@@ -34,16 +34,36 @@ struct cd_type
 
 typedef struct cd_type	cd_t;
 
+/*
+	output()
+	
+	Prints out values of title, artist, number of tracks, album and price
+	that is passed in as parameters.
+*/
 void output(char tit[TITLE_LENGTH], char art[TITLE_LENGTH], unsigned short no_tracks, int alb, float prce){
 	printf("%-20s %-15s %-10hu %-5d %-6.2f\n", tit, art, no_tracks, alb, prce);
 }
 
+/*
+	enter()
+	
+	Print out string given to method as parameter.
+	Print out "Press ENTER to exit program"
+	Waits for user to press any button.
+*/
 void enter(char prompt[]){
 	printf("%s\n", prompt);
 	printf("Press ENTER to exit program");
 	getchar();
 }
 
+/*
+	yesno()
+
+	Print out the string given to the method.
+	Read in character from input.
+	If character is 'Y' return 1, if 'N' return 0;
+*/
 int yesno(char string[]){
 	char	yn;	
 	for(;;){
@@ -55,6 +75,13 @@ int yesno(char string[]){
 	}
 }
 
+/*
+	read_int()
+	
+	Print out string given to read_int() as a parameter.
+	Read integer from input and return the value of this int.
+
+*/
 int read_int(char prompt[]){
 	int	i;
 
@@ -64,6 +91,12 @@ int read_int(char prompt[]){
 	return i;
 }
 
+/*
+	read_float()
+	
+	Print out string given to read_float() as a parameter.
+	Read float from input and return the value of this float.
+*/
 float read_float(char prompt[]){
 	float	f;
 
@@ -88,6 +121,11 @@ void read_string(char prompt[], char answer[], int max){
 	trim_string(answer);
 }
 
+/*
+	trim_string()
+
+	Removes the new-line character from the end of a string, if one exists
+*/
 void trim_string(char string[]){
 	if(string[strlen(string) - 1] == '\n')
 		string[strlen(string) - 1] = '\0';
@@ -103,16 +141,16 @@ int main()
 	
 	for(ent_num = 0; ent_num < CD_AMOUNT; ent_num++){
 		/*
-   		  Inputting data into title, artist, num_tracks, album and price variables.
+   		  Inputting data into title, artist, num_tracks, album and price variables belonging to cd.
 		*/
 		fputs("Please enter the CD's title: ", stdout);
-		scanf(" %[^\n]%*c", cd[ent_num].title);									/*%*c consumes the \n character at the end of the input and allows the next input to work correctly.*/
-		/*trim_string(title[ent_num]);*/
+		scanf(" %[^\n]%*c", cd[ent_num].title);															/*%*c consumes the \n character at the end of the input and allows the next input to work correctly.*/
+		trim_string(cd[ent_num].title);
 
 #ifndef NOARTIST		
 		fputs("Please enter the artist: ", stdout);
 		scanf("%[^\n]%*c", cd[ent_num].artist);
-		/*trim_string(title[ent_num]);*/
+		trim_string(cd[ent_num].title);
 #endif
 
 		fputs("Please enter the number of tracks on the CD: ", stdout);
@@ -128,14 +166,12 @@ int main()
 			}
 
 			cd[ent_num].album = strcmp("Single", album_or_single);						/*Compares variable album_or_single with "Single" so variable album will be set to 1 if it does not match and 0 if it does*/
-			if(cd[ent_num].album) cd[ent_num].album = 1;								/*Converts any non-zero number to 1 and leaves 0 as 0.*/
+			if(cd[ent_num].album) cd[ent_num].album = 1;											/*Converts any non-zero number to 1 and leaves 0 as 0.*/
 		}	
 
 		fputs("Please enter the price (in Rands): ", stdout);
 		scanf("%f", &cd[ent_num].price);
 
-		/*fputs("Enter Y if there are more CD's: ", stdout);
-		scanf(" %c%*c", &cont);*/
 		if(!yesno("Enter Y if there are more CD's: ")) break;
 	}
 
@@ -143,9 +179,6 @@ int main()
 		   Printing out the contents of the variables: title, artist, num_tracks, album and price.
 		*/
 		printf("%-20s %-15s %-10s %-5s %-6s\n", "Title", "Artist", "# Tracks", "Album", "Price");		
-		/*
-		   Making a heading for the variable so later I can print out a whole list of these variables when there is more than one CD.
-		*/
 		for(loop_num = 0; loop_num <= ent_num ; loop_num++){
 			output(cd[loop_num].title, cd[loop_num].artist, cd[loop_num].num_tracks, cd[loop_num].album, cd[loop_num].price);
 		}
