@@ -23,6 +23,16 @@ float	read_float();
 void	read_string(char [], char [], int);
 void	trim_string(char []);
 
+struct cd_type
+{
+	char 		title[TITLE_LENGTH + 1];
+	char 		artist[TITLE_LENGTH + 1];
+	unsigned short 	num_tracks;
+	int 		album;		/*non-zero number is album, 0 is single*/
+	float 	price;	
+};
+
+typedef struct cd_type	cd_t;
 
 void output(char tit[TITLE_LENGTH], char art[TITLE_LENGTH], unsigned short no_tracks, int alb, float prce){
 	printf("%-20s %-15s %-10hu %-5d %-6.2f\n", tit, art, no_tracks, alb, prce);
@@ -87,30 +97,26 @@ void trim_string(char string[]){
 
 int main()
 {
-	char 		title[CD_AMOUNT][TITLE_LENGTH + 1];
-	char 		artist[CD_AMOUNT][TITLE_LENGTH + 1];
-	unsigned short 	num_tracks[CD_AMOUNT];
-	int 		album[CD_AMOUNT];		/*non-zero number is album, 0 is single*/
 	int 		ent_num, loop_num;
-	float 	price[CD_AMOUNT];
 
+	cd_t cd[CD_AMOUNT];
 	
 	for(ent_num = 0; ent_num < CD_AMOUNT; ent_num++){
 		/*
    		  Inputting data into title, artist, num_tracks, album and price variables.
 		*/
 		fputs("Please enter the CD's title: ", stdout);
-		scanf(" %[^\n]%*c", title[ent_num]);									/*%*c consumes the \n character at the end of the input and allows the next input to work correctly.*/
+		scanf(" %[^\n]%*c", cd[ent_num].title);									/*%*c consumes the \n character at the end of the input and allows the next input to work correctly.*/
 		/*trim_string(title[ent_num]);*/
 
 #ifndef NOARTIST		
 		fputs("Please enter the artist: ", stdout);
-		scanf("%[^\n]%*c", artist[ent_num]);
+		scanf("%[^\n]%*c", cd[ent_num].artist);
 		/*trim_string(title[ent_num]);*/
 #endif
 
 		fputs("Please enter the number of tracks on the CD: ", stdout);
-		scanf("%hu", &num_tracks[ent_num]);
+		scanf("%hu", &cd[ent_num].num_tracks);
 
 		{
 		char album_or_single[TITLE_LENGTH + 1];
@@ -121,12 +127,12 @@ int main()
 				if(!(strcmp("Album", album_or_single) && strcmp("Single", album_or_single))) break;
 			}
 
-			album[ent_num] = strcmp("Single", album_or_single);						/*Compares variable album_or_single with "Single" so variable album will be set to 1 if it does not match and 0 if it does*/
-			if(album[ent_num]) album[ent_num] = 1;								/*Converts any non-zero number to 1 and leaves 0 as 0.*/
+			cd[ent_num].album = strcmp("Single", album_or_single);						/*Compares variable album_or_single with "Single" so variable album will be set to 1 if it does not match and 0 if it does*/
+			if(cd[ent_num].album) cd[ent_num].album = 1;								/*Converts any non-zero number to 1 and leaves 0 as 0.*/
 		}	
 
 		fputs("Please enter the price (in Rands): ", stdout);
-		scanf("%f", &price[ent_num]);
+		scanf("%f", &cd[ent_num].price);
 
 		/*fputs("Enter Y if there are more CD's: ", stdout);
 		scanf(" %c%*c", &cont);*/
@@ -141,7 +147,7 @@ int main()
 		   Making a heading for the variable so later I can print out a whole list of these variables when there is more than one CD.
 		*/
 		for(loop_num = 0; loop_num <= ent_num ; loop_num++){
-			output(title[loop_num], artist[loop_num], num_tracks[loop_num], album[loop_num], price[loop_num]);
+			output(cd[loop_num].title, cd[loop_num].artist, cd[loop_num].num_tracks, cd[loop_num].album, cd[loop_num].price);
 		}
 
 
