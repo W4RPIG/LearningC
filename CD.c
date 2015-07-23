@@ -12,10 +12,13 @@
 #include <ctype.h>
 #include "database.h"
 
+/*#define RMPRINTING*/
+#define RMBLOCK
+
 /*
    Function prototypes
 */
-void	output(char [], char [], unsigned short, int, float);
+void	output(char [], char [], int, int, float);
 void	enter(char []);
 int		yesno(char []);
 int 	read_int();
@@ -23,16 +26,23 @@ float	read_float();
 void	read_string(char [], char [], int);
 void	trim_string(char []);
 
+/*
+	 Structures
+*/
 struct cd_type
 {
 	char 		title[TITLE_LENGTH + 1];
 	char 		artist[TITLE_LENGTH + 1];
-	unsigned short 	num_tracks;
+	int 		num_tracks;
 	int 		album;		/*non-zero number is album, 0 is single*/
 	float 	price;	
 };
 
+/*
+	 Typedefs
+*/
 typedef struct cd_type	cd_t;
+
 
 /*
 	output()
@@ -40,9 +50,10 @@ typedef struct cd_type	cd_t;
 	Prints out values of title, artist, number of tracks, album and price
 	that is passed in as parameters.
 */
-void output(char tit[TITLE_LENGTH], char art[TITLE_LENGTH], unsigned short no_tracks, int alb, float prce){
-	printf("%-20s %-15s %-10hu %-5d %-6.2f\n", tit, art, no_tracks, alb, prce);
+void output(char tit[TITLE_LENGTH], char art[TITLE_LENGTH], int no_tracks, int alb, float prce){
+	printf("%-20s %-15s %-10d %-5d %-6.2f\n", tit, art, no_tracks, alb, prce);
 }
+
 
 /*
 	enter()
@@ -56,6 +67,7 @@ void enter(char prompt[]){
 	printf("Press ENTER to exit program");
 	getchar();
 }
+
 
 /*
 	yesno()
@@ -75,6 +87,7 @@ int yesno(char string[]){
 	}
 }
 
+
 /*
 	read_int()
 	
@@ -85,11 +98,12 @@ int yesno(char string[]){
 int read_int(char prompt[]){
 	int	i;
 
-	printf("%s\n", prompt);
+	printf("%s", prompt);
 	scanf("%d", &i);
 
 	return i;
 }
+
 
 /*
 	read_float()
@@ -106,6 +120,7 @@ float read_float(char prompt[]){
 	return f;
 }
 
+
 /*
    read_string()
 
@@ -114,11 +129,34 @@ float read_float(char prompt[]){
    Note: the answer parameter is MODIFIED by the function
 */
 void read_string(char prompt[], char answer[], int max){
-	fputs(prompt, stdout);
-	fflush(stdin);
-	fgets(answer, max, stdin);
-
+	printf("%s", prompt);
+	scanf(" %[^\n]%*c", answer);
 	trim_string(answer);
+}
+
+
+/*
+	 read_cd
+
+	 Read the input into the contents of CD
+*/
+cd_t read_cd(){
+	 cd_t	 cd_ans;
+	 char	 alb_sing[10];
+	 read_string("Please enter the CD's title: ", cd_ans.title, sizeof cd_ans.title);
+	 read_string("Please enter the artist: ", cd_ans.artist, sizeof cd_ans.artist);
+	 cd_ans.num_tracks = read_int("Please enter the number of tracks on the CD: ");
+	 for(;;){
+	 		read_string("Please enter whether the CD is a \"Album\" or \"Single\": ", alb_sing, sizeof alb_sing);
+			if(!(strcmp("Album", alb_sing) && strcmp("Single", alb_sing))) break;
+	 }
+	 if(strcmp("Single", alb_sing)){		  						/*set to 1 if it does not match and 0 if it does*/
+				 	 cd_ans.album = 1;
+	 }
+	 else cd_ans.album = 0;
+
+	 cd_ans.price = read_float("Please enter the price (in Rands): ");
+	 return cd_ans;
 }
 
 /*
@@ -143,35 +181,8 @@ int main()
 		/*
    		  Inputting data into title, artist, num_tracks, album and price variables belonging to cd.
 		*/
-		fputs("Please enter the CD's title: ", stdout);
-		scanf(" %[^\n]%*c", cd[ent_num].title);															/*%*c consumes the \n character at the end of the input and allows the next input to work correctly.*/
-		trim_string(cd[ent_num].title);
 
-#ifndef NOARTIST		
-		fputs("Please enter the artist: ", stdout);
-		scanf("%[^\n]%*c", cd[ent_num].artist);
-		trim_string(cd[ent_num].title);
-#endif
-
-		fputs("Please enter the number of tracks on the CD: ", stdout);
-		scanf("%hu", &cd[ent_num].num_tracks);
-
-		{
-		char album_or_single[TITLE_LENGTH + 1];
-
-			for(;;){											/*Keep asking for Album or Single if neither is entered correctly.*/
-				fputs("Please enter whether the CD is a \"Album\" or \"Single\": ", stdout);
-				scanf("%s", album_or_single);
-				if(!(strcmp("Album", album_or_single) && strcmp("Single", album_or_single))) break;
-			}
-
-			cd[ent_num].album = strcmp("Single", album_or_single);						/*Compares variable album_or_single with "Single" so variable album will be set to 1 if it does not match and 0 if it does*/
-			if(cd[ent_num].album) cd[ent_num].album = 1;											/*Converts any non-zero number to 1 and leaves 0 as 0.*/
-		}	
-
-		fputs("Please enter the price (in Rands): ", stdout);
-		scanf("%f", &cd[ent_num].price);
-
+	  cd[ent_num] = read_cd();
 		if(!yesno("Enter Y if there are more CD's: ")) break;
 	}
 
