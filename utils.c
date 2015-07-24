@@ -4,11 +4,10 @@
   By Ross van Heerden, 2015
 */
 #include "database.h"
-/*
-   Function prototypes
-*/
-void	trim_string(char []);
-
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
 
 /*
 	trim_string()

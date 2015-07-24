@@ -1,16 +1,11 @@
 /*
-   maximums.h
+   database.h
 
    Header file for definitions of maximum amounts to be
    used in CD.c and any other .c files that may need it.
 
    By Ross van Heerden, 2015
 */
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-
 
 #define CD_AMOUNT 100		/*Maximum amount of CD's*/
 #define TITLE_LENGTH 40		/*Maximum length of title*/
@@ -19,6 +14,20 @@
 	 Typedefs
 */
 typedef struct cd_type	cd_t;
+
+
+/*
+   Function prototypes
+*/
+void	print_cd(cd_t);
+void	trim_string(char []);
+void	enter(char []);
+int		yesno(char []);
+int 	read_int();
+float	read_float();
+void	read_string(char [], char [], int);
+cd_t	read_cd();
+
 
 /*
 	 Structures

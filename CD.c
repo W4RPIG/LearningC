@@ -12,8 +12,6 @@
 #include <ctype.h>
 #include "database.h"
 
-/*#define RMPRINTING*/
-#define RMBLOCK
 
 /*
    Function prototypes
@@ -25,6 +23,7 @@ int 	read_int();
 float	read_float();
 void	read_string(char [], char [], int);
 void	trim_string(char []);
+
 
 /*
 	 Structures
@@ -45,13 +44,13 @@ typedef struct cd_type	cd_t;
 
 
 /*
-	output()
+	print_cd()
 	
 	Prints out values of title, artist, number of tracks, album and price
 	that is passed in as parameters.
 */
-void output(char tit[TITLE_LENGTH], char art[TITLE_LENGTH], int no_tracks, int alb, float prce){
-	printf("%-20s %-15s %-10d %-5d %-6.2f\n", tit, art, no_tracks, alb, prce);
+void print_cd(cd_t cd){
+	printf("%-20s %-15s %-10d %-5d %-6.2f\n", cd.title, cd.artist, cd.num_tracks, cd.album, cd.price);
 }
 
 
@@ -174,16 +173,12 @@ void trim_string(char string[]){
 int main()
 {
 	int 		ent_num, loop_num;
+	cd_t		cd[CD_AMOUNT];
 
-	cd_t cd[CD_AMOUNT];
-	
-	for(ent_num = 0; ent_num < CD_AMOUNT; ent_num++){
-		/*
-   		  Inputting data into title, artist, num_tracks, album and price variables belonging to cd.
-		*/
-
-	  cd[ent_num] = read_cd();
-		if(!yesno("Enter Y if there are more CD's: ")) break;
+	/*Inputting data into title, artist, num_tracks, album and price variables belonging to cd.*/
+	for(ent_num = 0; ent_num < CD_AMOUNT; ent_num++){		
+			cd[ent_num] = read_cd();
+			if(!yesno("Enter Y if there are more CD's: ")) break;
 	}
 
 		/*
@@ -191,10 +186,8 @@ int main()
 		*/
 		printf("%-20s %-15s %-10s %-5s %-6s\n", "Title", "Artist", "# Tracks", "Album", "Price");		
 		for(loop_num = 0; loop_num <= ent_num ; loop_num++){
-			output(cd[loop_num].title, cd[loop_num].artist, cd[loop_num].num_tracks, cd[loop_num].album, cd[loop_num].price);
+			print_cd(cd[loop_num]);
 		}
 
-
-	
 	return EXIT_SUCCESS;
 }

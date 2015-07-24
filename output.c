@@ -5,15 +5,11 @@
   
   By Ross van Heerden, 2015
 */
-
-
-/*
-   Function prototypes
-*/
 #include "database.h"
-void	output(char [], char [], int, int, float);
-
-
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
 
 /*
 	print_cd()

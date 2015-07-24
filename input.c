@@ -7,16 +7,10 @@
   By Ross van Heerden, 2015
 */
 #include "database.h"
-
-/*
-   Function prototypes
-*/
-void	enter(char []);
-int		yesno(char []);
-int 	read_int();
-float	read_float();
-void	read_string(char [], char [], int);
-
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
 
 /*
 	enter()
