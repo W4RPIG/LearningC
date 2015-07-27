@@ -19,7 +19,7 @@ int main()
 
 	/*Inputting data into title, artist, num_tracks, album and price variables belonging to cd.*/
 	for(ent_num = 0; ent_num < CD_AMOUNT; ent_num++){		
-			cd[ent_num] = read_cd();
+			read_cd(&cd[ent_num]);
 			if(!yesno("Enter Y if there are more CD's: ")) break;
 	}
 
@@ -28,7 +28,7 @@ int main()
 		*/
 		printf("%-20s %-15s %-10s %-5s %-6s\n", "Title", "Artist", "# Tracks", "Album", "Price");		
 		for(loop_num = 0; loop_num <= ent_num ; loop_num++){
-			print_cd(cd[loop_num]);
+			print_cd(&cd[loop_num]);
 		}
 
 	return EXIT_SUCCESS;

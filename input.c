@@ -97,22 +97,22 @@ void read_string(char prompt[], char answer[], int max){
 
 	 Read the input into the contents of CD
 */
-cd_t read_cd(){
-	 cd_t	 cd_ans;
+void read_cd(cd_t *cd){
+	 /*cd_t	 cd_ans;*/
 	 char	 alb_sing[10];
-	 read_string("Please enter the CD's title: ", cd_ans.title, sizeof cd_ans.title);
-	 read_string("Please enter the artist: ", cd_ans.artist, sizeof cd_ans.artist);
-	 cd_ans.num_tracks = read_int("Please enter the number of tracks on the CD: ");
+	 read_string("Please enter the CD's title: ", cd->title, sizeof cd->title);
+	 read_string("Please enter the artist: ", cd->artist, sizeof cd->artist);
+	 cd->num_tracks = read_int("Please enter the number of tracks on the CD: ");
 	 for(;;){
 	 		read_string("Please enter whether the CD is a \"Album\" or \"Single\": ", alb_sing, sizeof alb_sing);
 			if(!(strcmp("Album", alb_sing) && strcmp("Single", alb_sing))) break;
 	 }
 	 if(strcmp("Single", alb_sing)){		  						/*set to 1 if it does not match and 0 if it does*/
-				 	 cd_ans.album = 1;
+				 	 cd->album = 1;
 	 }
-	 else cd_ans.album = 0;
+	 else cd->album = 0;
 
-	 cd_ans.price = read_float("Please enter the price (in Rands): ");
-	 return cd_ans;
+	 cd->price = read_float("Please enter the price (in Rands): ");
+	 /*return cd_ans;*/
 }
 
