@@ -31,6 +31,7 @@ int 	read_int();
 float	read_float();
 void	read_string(char [], char [], int);
 void	read_cd(cd_t *cd);
+int		read_num_cds();
 
 
 /*

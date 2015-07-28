@@ -116,3 +116,9 @@ void read_cd(cd_t *cd){
 	 /*return cd_ans;*/
 }
 
+int read_num_cds(){
+		int num_cds;
+		printf("Please enter the number of CD's: ");
+		scanf("%d", &num_cds);
+		return num_cds;
+}

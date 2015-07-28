@@ -15,21 +15,30 @@
 int main()
 {
 	int 		ent_num, loop_num;
-	cd_t		cd[CD_AMOUNT];
+	/*static cd_t		cd[CD_AMOUNT];*/
+	int			cd_amount = read_num_cds();
+
+	cd_t *cd_p;
+	cd_p = malloc(cd_amount * sizeof(cd_t));
+	if(cd_p == NULL){
+		printf("Malloc failed in main.c\n");
+		exit(1);
+	}
 
 	/*Inputting data into title, artist, num_tracks, album and price variables belonging to cd.*/
-	for(ent_num = 0; ent_num < CD_AMOUNT; ent_num++){		
-			read_cd(&cd[ent_num]);
-			if(!yesno("Enter Y if there are more CD's: ")) break;
+	for(ent_num = 0; ent_num < cd_amount; ent_num++){	
+			printf("=========CD %d==========\n",ent_num+1);
+			read_cd(&cd_p[ent_num]);	
 	}
+
 
 		/*
 		   Printing out the contents of the variables: title, artist, num_tracks, album and price.
 		*/
 		printf("%-20s %-15s %-10s %-5s %-6s\n", "Title", "Artist", "# Tracks", "Album", "Price");		
-		for(loop_num = 0; loop_num <= ent_num ; loop_num++){
-			print_cd(&cd[loop_num]);
+		for(loop_num = 0; loop_num < ent_num ; loop_num++){
+			print_cd(&cd_p[loop_num]);
 		}
-
-	return EXIT_SUCCESS;
+		free(cd_p);
+		return EXIT_SUCCESS;
 }
