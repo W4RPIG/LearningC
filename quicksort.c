@@ -15,20 +15,28 @@ static void swap(int *num1, int *num2){
 }
 
 static void qsort(int v[], int i, int j){
-	int pivot = v[i];
+	int pivot = v[j];
 	int left = i;
 	int right = j;
 	
-	
-	if(pivot > v[right]){
-		swap(&v[left], &v[right]);
-		pivot = v[right];
-		while(pivot > v[left])	left++;
+		
+		while(pivot > v[left]){
+			left++;
+			swap(&v[left], &v[right]);
+			pivot = v[left];
+		}
+		while(pivot < v[right]){
+			right--;
+			swap(&v[left], &v[right]);
+			pivot = v[right];
+		}
+		/*while(pivot > v[left])	left++;
 		if(left == right) printf("left = right");
 		swap(&v[left], &v[right]);
-		pivot = v[left];
-		printf("left: %d	right: %d	pivot: %d\n", left, right, pivot);
-	}
+		pivot = v[left];*/
+		printf("left: %d	right: %d	pivot: %d\n", left, right, pivot);	
+		qsort(v, left, pivot);
+		qsort(v, pivot, right);
 }
 
 int main()
