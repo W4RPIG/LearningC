@@ -1,10 +1,6 @@
 CC=gcc
 CFLAGS=-I.
-DEPS = database.h
-OBJ = main.o input.o output.o utils.o 
+OBJ = quicksort.o test_quicksort.o 
 
-%.o: %.c $(DEPS)
-	$(CC) -c -o $@ $< $(CFLAGS)
-
-CD: $(OBJ)
+test_quicksort: $(OBJ)
 	gcc -o $@ $^ $(CFLAGS)
