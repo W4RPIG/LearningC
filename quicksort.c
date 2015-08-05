@@ -6,6 +6,7 @@
 	By Ross van Heerden, 2015
 */
 #include <stdio.h>
+#include <stdlib.h>
 
 static void swap(int *num1, int *num2){
 	int temp;
@@ -14,29 +15,25 @@ static void swap(int *num1, int *num2){
 	*num2 = temp;
 }
 
-static void qsort(int v[], int i, int j){
-	int pivot = v[j];
-	int left = i;
-	int right = j;
+static void my_qsort(int v[], int i, int j){
+	int pivot;
+	int p;
+	int first = i;
+	int last = j;
 	
-		
-		while(pivot > v[left]){
-			left++;
-			swap(&v[left], &v[right]);
-			pivot = v[left];
+	if(i < j){
+		pivot = i;
+
+		while(i < j){
+			while(v[i] <= v[pivot] && i < j) i++;
+			while(v[j] > v[pivot]) j--;
+			if(i<j) swap(&v[i], &v[j]);
 		}
-		while(pivot < v[right]){
-			right--;
-			swap(&v[left], &v[right]);
-			pivot = v[right];
-		}
-		/*while(pivot > v[left])	left++;
-		if(left == right) printf("left = right");
-		swap(&v[left], &v[right]);
-		pivot = v[left];*/
-		printf("left: %d	right: %d	pivot: %d\n", left, right, pivot);	
-		qsort(v, left, pivot);
-		qsort(v, pivot, right);
+		swap(&v[j], &v[pivot]);
+	
+		my_qsort(v, first, j-1);
+		my_qsort(v, j+1, last);
+	}
 }
 
 int main()
@@ -49,7 +46,7 @@ int main()
 		printf("%d\t",arr[i]);
 	printf("\n");
 
-	qsort(arr, 0, 7);
+	my_qsort(arr, 0, 7);
 
 	for(i = 0; i < sizeof(arr)/sizeof(arr[0]); i++)
 		printf("%d\t",arr[i]);
